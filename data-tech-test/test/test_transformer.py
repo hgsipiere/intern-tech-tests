@@ -5,7 +5,6 @@ import numpy as np
 
 from src.transformer import Transformer
 
-
 @pytest.fixture
 def order_data_instance():
     return pd.DataFrame({
@@ -33,6 +32,10 @@ class TestTransformer:
         assert np.all(enriched_orders['testCol'] == ['testValue', 'testValue', 'testValue', 'testValue', 'testValue', 'testValue', 'testValue', 'testValue'])
 
     # TODO: Task 2
-    @mark.notimplemented
     def test__split_customers(self, order_data_instance, order_countries):
         df = order_data_instance
+        transformer = Transformer()
+        low_cost_orders, high_cost_orders = transformer.split_customers(df, 60)
+
+        assert (np.all(low_cost_orders["amount"] == [10,30,40]) and
+                np.all(high_cost_orders["amount"] == [60,70,80,2000,5000]) )
